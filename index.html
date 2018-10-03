@@ -105,110 +105,111 @@
       }
       var triangleVertexPositionBuffer
       var triangleVertexColorBuffer
+      var lineVertexPositionBuffer
+      var lineVertexColorBuffer
       function initBuffers() {
         // Triangle Position
         triangleVertexPositionBuffer = gl.createBuffer()
         gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexPositionBuffer)
         var vertices = [
-          -1.0, 1.0, 0.0,
-            1.0, 1.0, 0.0,
-            -1.0, 0.65, 0.0,
-            1.0, 0.65, 0.0,
+          -1.0, 1.0, 0.25,
+            1.0, 1.0, 0.25,
+            -1.0, 0.65, 0.25,
+            1.0, 0.65, 0.25,
 
-            1.0, 0.65, 0.0,
-            0.4, 0.65, 0.0,
-            -0.4, -0.65, 0.0,
-            -1.0, -0.65, 0.0,
+            1.0, 0.65, 0.25,
+            0.4, 0.65, 0.25,
+            -0.4, -0.65, 0.25,
+            -1.0, -0.65, 0.25,
 
             // 2
 
-            -1.0, -0.65, 0.0,
-            1.0, -0.65, 0.0,
-            -1.0, -1.0, 0.0,
-            1.0, -1.0, 0.0,
+            -1.0, -0.65, 0.25,
+            1.0, -0.65, 0.25,
+            -1.0, -1.0, 0.25,
+            1.0, -1.0, 0.25,
 
-            1.0, -1.0, 0.0,
-            1.0, -1.0, -0.5,
-            -1.0, -1.0, -0.5,
-            1.0, -1.0, 0.0,
-            -1.0, -1.0, 0.0,
+            1.0, -1.0, 0.25,
+            1.0, -1.0, -0.25,
+            -1.0, -1.0, -0.25,
+            1.0, -1.0, 0.25,
+            -1.0, -1.0, 0.25,
 
             // 3
 
-            -1.0, -1.0, 0.0,
-            -1.0, -0.65, 0.0,
-            -1.0, -1.0, -0.5,
-            -1.0, -0.65, -0.5,
+            -1.0, -1.0, 0.25,
+            -1.0, -0.65, 0.25,
+            -1.0, -1.0, -0.25,
+            -1.0, -0.65, -0.25,
 
-            -1.0, -0.65, -0.5,
-            1.0, -0.65, -0.5,
-            -1.0, -1.0, -0.5,
-            1.0, -1.0, -0.5,
+            -1.0, -0.65, -0.25,
+            1.0, -0.65, -0.25,
+            -1.0, -1.0, -0.25,
+            1.0, -1.0, -0.25,
 
             // 4
 
-            1.0, -1.0, -0.5,
-            1.0, -0.65, -0.5,
-            1.0, -1.0, 0.0,
-            1.0, -0.65, 0.0,
+            1.0, -1.0, -0.25,
+            1.0, -0.65, -0.25,
+            1.0, -1.0, 0.25,
+            1.0, -0.65, 0.25,
 
-            1.0, -0.65, 0.0,
-            -0.4, -0.65, 0.0,
-            1.0, -0.65, -0.5,
-            -0.4, -0.65, -0.5,
+            1.0, -0.65, 0.25,
+            -0.4, -0.65, 0.25,
+            1.0, -0.65, -0.25,
+            -0.4, -0.65, -0.25,
 
             // 5
 
-            -0.4, -0.65, -0.5,
-            -0.4, -0.65, 0.0,
-            1.0, 0.65, -0.5,
-            1.0, 0.65, 0.0,
+            -0.4, -0.65, -0.25,
+            -0.4, -0.65, 0.25,
+            1.0, 0.65, -0.25,
+            1.0, 0.65, 0.25,
 
-            1.0, 0.65, 0.0,
-            1.0, 0.65, -0.5,
-            1.0, 1.0, 0.0,
-            1.0, 1.0, -0.5,
+            1.0, 0.65, 0.25,
+            1.0, 0.65, -0.25,
+            1.0, 1.0, 0.25,
+            1.0, 1.0, -0.25,
 
             // 6
 
-            1.0, 1.0, -0.5,
-            1.0, 1.0, 0.0,
-            -1.0, 1.0, -0.5,
-            -1.0, 1.0, 0.0,
+            1.0, 1.0, -0.25,
+            1.0, 1.0, 0.25,
+            -1.0, 1.0, -0.25,
+            -1.0, 1.0, 0.25,
 
-            -1.0, 1.0, 0.0,
-            -1.0, 1.0, -0.5,
-            -1.0, 0.65, 0.0,
-            -1.0, 0.65, -0.5,
+            -1.0, 1.0, 0.25,
+            -1.0, 1.0, -0.25,
+            -1.0, 0.65, 0.25,
+            -1.0, 0.65, -0.25,
 
             // 7
 
-            -1.0, 0.65, -0.5,
-            -1.0, 0.65, 0.0,
-            0.4, 0.65, -0.5,
-            0.4, 0.65, 0.0,
+            -1.0, 0.65, -0.25,
+            -1.0, 0.65, 0.25,
+            0.4, 0.65, -0.25,
+            0.4, 0.65, 0.25,
 
-            0.4, 0.65, 0.0,
-            0.4, 0.65, -0.5,
-            -1.0, -0.65, 0.0,
-            -1.0, -0.65, -0.5,
+            0.4, 0.65, 0.25,
+            0.4, 0.65, -0.25,
+            -1.0, -0.65, 0.25,
+            -1.0, -0.65, -0.25,
 
             // 8
 
-            -1.0, -0.65, -0.5,
-            -0.4, -0.65, -0.5,
-            0.4, 0.65, -0.5,
-            1.0, 0.65, -0.5,
+            -1.0, -0.65, -0.25,
+            -0.4, -0.65, -0.25,
+            0.4, 0.65, -0.25,
+            1.0, 0.65, -0.25,
 
-            1.0, 0.65, -0.5,
-            -1.0, 0.65, -0.5,
-            1.0, 1.0, -0.5,
-            -1.0, 1.0, -0.5,
+            1.0, 0.65, -0.25,
+            -1.0, 0.65, -0.25,
+            1.0, 1.0, -0.25,
+            -1.0, 1.0, -0.25,
         ]
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW)
         triangleVertexPositionBuffer.itemSize = 3
         triangleVertexPositionBuffer.numItems = vertices.length / 3
-        // Triangle Color
         triangleVertexColorBuffer = gl.createBuffer()
         gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexColorBuffer)
         var colors = [
@@ -322,24 +323,82 @@
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW)
         triangleVertexColorBuffer.itemSize = 4
         triangleVertexColorBuffer.numItems = 4
+
+        //cube
+        lineVertexPositionBuffer = gl.createBuffer()
+        gl.bindBuffer(gl.ARRAY_BUFFER, lineVertexPositionBuffer)
+        vertices = [
+          -5.0, -5.0, 5.0,
+            -5.0, 5.0, 5.0,       //a-e
+
+            -5.0, 5.0, 5.0,
+            5.0, 5.0, 5.0,        //e-f
+
+            5.0, 5.0, 5.0,
+            5.0, -5.0, 5.0,       //f-b
+
+            5.0, -5.0, 5.0,
+            -5.0, -5.0, 5.0,      //b-a
+
+            -5.0, -5.0, -5.0,
+            -5.0, 5.0, -5.0,      //d-h
+
+            -5.0, 5.0, -5.0,
+            5.0, 5.0, -5.0,       //h-g
+
+            5.0, 5.0, -5.0,
+            5.0, -5.0, -5.0,      //g-c
+
+            5.0, -5.0, -5.0,
+            -5.0, -5.0, -5.0,
+
+            -5.0, -5.0, 5.0,
+            -5.0, -5.0, -5.0,
+
+            -5.0, 5.0, 5.0,
+            -5.0, 5.0, -5.0,
+
+            5.0, 5.0, 5.0,
+            5.0, 5.0, -5.0,
+            
+            5.0, -5.0, 5.0,
+            5.0, -5.0, -5.0,
+        ]
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW)
+        lineVertexPositionBuffer.itemSize = 3
+        lineVertexPositionBuffer.numItems = vertices.length / 3
+        // line Color
+        lineVertexColorBuffer = gl.createBuffer()
+        gl.bindBuffer(gl.ARRAY_BUFFER, lineVertexColorBuffer)
+        for (var i=0; i < vertices.length / 6; i++) {
+            colors = colors.concat([0.84, 0.1, 0.27, 1.0]);
+            colors = colors.concat([1.0, 0.87, 0.86, 1.0]);
+        }
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW)
+        lineVertexColorBuffer.itemSize = 4
+        lineVertexColorBuffer.numItems = 4
       }
       var rTri = 0
+      var transTri = [0.0, 0.0, 0.0]
+      
+      var rLn = 0
       function drawScene() {
         gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight)
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
         mat4.perspective(pMatrix, glMatrix.toRadian(45), gl.viewportWidth / gl.viewportHeight, 0.1, 100.0)
         mat4.identity(mvMatrix)
-        mat4.translate(mvMatrix, mvMatrix, [0.0, -1.25, -7.0])
+        mat4.translate(mvMatrix, mvMatrix, [0.0, 0.0, -20.0])
+        mvPushMatrix()
+        gl.bindBuffer(gl.ARRAY_BUFFER, lineVertexPositionBuffer)
+        gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, lineVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0)
+        gl.bindBuffer(gl.ARRAY_BUFFER, lineVertexColorBuffer)
+        gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, lineVertexColorBuffer.itemSize, gl.FLOAT, false, 0, 0)
+        setMatrixUniforms()
+        gl.drawArrays(gl.LINES, 0, lineVertexPositionBuffer.numItems)
+        mvPopMatrix()
+        mat4.translate(mvMatrix, mvMatrix, transTri)
         mvPushMatrix()
         mat4.rotate(mvMatrix, mvMatrix, glMatrix.toRadian(rTri), [0.0, 1.0, 0.0])
-        mat4.rotateY(mvMatrix, mvMatrix, glMatrix.toRadian(rTri))
-        mat4.rotateY(mvMatrix, mvMatrix, glMatrix.toRadian(rTri))
-        mat4.rotateY(mvMatrix, mvMatrix, glMatrix.toRadian(rTri))
-        mat4.rotateY(mvMatrix, mvMatrix, glMatrix.toRadian(rTri))
-        mat4.rotateY(mvMatrix, mvMatrix, glMatrix.toRadian(rTri))
-        mat4.rotateY(mvMatrix, mvMatrix, glMatrix.toRadian(rTri))
-        mat4.rotateY(mvMatrix, mvMatrix, glMatrix.toRadian(rTri))
-        mat4.rotateY(mvMatrix, mvMatrix, glMatrix.toRadian(rTri))
         gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexPositionBuffer)
         gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, triangleVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0)
         gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexColorBuffer)
@@ -347,16 +406,32 @@
         setMatrixUniforms()
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, triangleVertexPositionBuffer.numItems)
         mvPopMatrix()
-        mat4.translate(mvMatrix, mvMatrix, [0.0, 2.5, 0.0])
-        mvPushMatrix()
-        mvPopMatrix()
       }
       var lastTime = 0
+      var bound = 4
+      var dirTri=[]
+      dirTri[0] = 0.05*(Math.random()<0.5? 1: -1)
+      dirTri[1] = 0.05*(Math.random()<0.5? 1: -1)
+      dirTri[2] = 0.05*(Math.random()<0.5? 1: -1)
+      var flag = 1
       function animate() {
         var timeNow = new Date().getTime()
+
         if (lastTime != 0) {
-          var elapsed = timeNow - lastTime
-          rTri += (90 * elapsed) / 1000.0
+          var elapsed = timeNow - lastTime          
+          if (transTri[0]>bound) {
+            dirTri[0] *= -1
+            flag *= -1
+          }
+          if (transTri[0]<-bound) {
+            dirTri[0] *= -1
+            flag *= -1            
+          }
+          if (flag==-1) {
+            elapsed *= -1
+          }
+          rTri += (500 * elapsed) / 1000.0
+          transTri[0] += dirTri[0]
         }
         lastTime = timeNow
       }
