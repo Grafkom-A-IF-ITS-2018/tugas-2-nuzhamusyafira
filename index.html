@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>Tugas 1</title>
+    <title>Tugas 2</title>
     <meta http-equiv="content-type" content="text/html" charset="ISO-8859-1">
 
     <script type="text/javascript" src="gl-matrix-min.js"></script>
@@ -107,6 +107,8 @@
       var triangleVertexColorBuffer
       var lineVertexPositionBuffer
       var lineVertexColorBuffer
+      var zVertices=[]
+      var lnVertices=[]
       function initBuffers() {
         // Triangle Position
         triangleVertexPositionBuffer = gl.createBuffer()
@@ -207,6 +209,9 @@
             1.0, 1.0, -0.25,
             -1.0, 1.0, -0.25,
         ]
+        for(var i=0;i<vertices.length/3;i++){
+          zVertices.push([vertices[i*3],vertices[i*3+1],vertices[i*3+2], 1.0])
+        }
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW)
         triangleVertexPositionBuffer.itemSize = 3
         triangleVertexPositionBuffer.numItems = vertices.length / 3
@@ -322,7 +327,7 @@
         ]
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW)
         triangleVertexColorBuffer.itemSize = 4
-        triangleVertexColorBuffer.numItems = 4
+        triangleVertexColorBuffer.numItems = vertices.length / 4
 
         //cube
         lineVertexPositionBuffer = gl.createBuffer()
@@ -364,6 +369,14 @@
             5.0, -5.0, 5.0,
             5.0, -5.0, -5.0,
         ]
+        lnVertices.push([-5.0, -5.0, 5.0, 1.0])
+        lnVertices.push([5.0, -5.0, 5.0, 1.0])
+        lnVertices.push([5.0, -5.0, -5.0, 1.0])
+        lnVertices.push([-5.0, -5.0, -5.0, 1.0])
+        lnVertices.push([-5.0, 5.0, 5.0, 1.0])
+        lnVertices.push([5.0, 5.0, 5.0, 1.0])
+        lnVertices.push([5.0, 5.0, -5.0, 1.0])
+        lnVertices.push([-5.0, 5.0, -5.0, 1.0])
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW)
         lineVertexPositionBuffer.itemSize = 3
         lineVertexPositionBuffer.numItems = vertices.length / 3
@@ -376,12 +389,11 @@
         }
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW)
         lineVertexColorBuffer.itemSize = 4
-        lineVertexColorBuffer.numItems = 4
+        lineVertexColorBuffer.numItems = vertices.length / 4
       }
-      var rTri = 0
-      var transTri = [0.0, 0.0, 0.0]
-      
-      var rLn = 0
+      var rTri=0
+      var transTri=[0.0, 0.0, 0.0]
+      var flag=1
       function drawScene() {
         gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight)
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
@@ -393,6 +405,11 @@
         gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, lineVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0)
         gl.bindBuffer(gl.ARRAY_BUFFER, lineVertexColorBuffer)
         gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, lineVertexColorBuffer.itemSize, gl.FLOAT, false, 0, 0)
+        var lineNow=[]
+        for(var i=0;i<lnVertices.length;i++){
+          var temp=matMul(mvMatrix,lnVertices[i])
+          lineNow.push(temp)
+        }
         setMatrixUniforms()
         gl.drawArrays(gl.LINES, 0, lineVertexPositionBuffer.numItems)
         mvPopMatrix()
@@ -403,37 +420,90 @@
         gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, triangleVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0)
         gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexColorBuffer)
         gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, triangleVertexColorBuffer.itemSize, gl.FLOAT, false, 0, 0)
+        var zNow=[]
+        for(var i=0;i<zVertices.length; i++) {
+          var temp = matMul(mvMatrix, zVertices[i])
+          zNow.push(temp)
+        }
+        detectCols(zNow,lineNow)
         setMatrixUniforms()
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, triangleVertexPositionBuffer.numItems)
         mvPopMatrix()
       }
-      var lastTime = 0
-      var bound = 4
+      function matMul(m,v){
+        var x=m[0]*v[0]+m[4]*v[1]+m[8]*v[2]+m[12]*v[3]
+        var y=m[1]*v[0]+m[5]*v[1]+m[9]*v[2]+m[13]*v[3]
+        var z=m[2]*v[0]+m[6]*v[1]+m[10]*v[2]+m[14]*v[3]
+        var i=m[3]*v[0]+m[7]*v[1]+m[11]*v[2]+m[15]*v[3]
+        return [x,y,z,i]
+      }
       var dirTri=[]
-      dirTri[0] = 0.05*(Math.random()<0.5? 1: -1)
-      dirTri[1] = 0.05*(Math.random()<0.5? 1: -1)
-      dirTri[2] = 0.05*(Math.random()<0.5? 1: -1)
-      var flag = 1
+      var speed=0.02
+      dirTri[0]=speed
+      dirTri[1]=speed
+      dirTri[2]=speed
+      function detectCols(z,ln){
+        for(var i=0;i<z.length;i++){
+          if(z[i][0]>=ln[5][0]){
+            if(dirTri[0]>0){
+              dirTri[0]=dirTri[0]*(-1.0)
+              flag*=-1
+              zMoves()
+            }
+            return
+          }
+          if(z[i][0]<=ln[4][0]){
+            if(dirTri[0]<0){
+              dirTri[0]=dirTri[0]*(-1.0)
+              flag*=-1
+              zMoves()
+            }
+            return
+          }
+          if(z[i][1]>=ln[5][1]){
+            if(dirTri[1]>0){
+              dirTri[1]=dirTri[1]*(-1.0)
+              zMoves()
+            }
+            return
+          }
+          if(z[i][1]<=ln[1][1]){
+            if(dirTri[1]<0){
+              dirTri[1]=dirTri[1]*(-1.0)
+              zMoves()
+            }
+            return
+          }
+          if(z[i][2]>=ln[4][2]){
+            if(dirTri[2]>0){
+              dirTri[2]=dirTri[2]*(-1.0)
+              zMoves()
+            }
+            return
+          }
+          if(z[i][2]<=ln[7][2]){
+            if(dirTri[2]<0){
+              dirTri[2]=dirTri[2]*(-1.0)
+              zMoves()
+            }
+            return
+          }
+        }
+      }
+      var lastTime = 0
       function animate() {
         var timeNow = new Date().getTime()
-
         if (lastTime != 0) {
           var elapsed = timeNow - lastTime          
-          if (transTri[0]>bound) {
-            dirTri[0] *= -1
-            flag *= -1
-          }
-          if (transTri[0]<-bound) {
-            dirTri[0] *= -1
-            flag *= -1            
-          }
-          if (flag==-1) {
-            elapsed *= -1
-          }
-          rTri += (500 * elapsed) / 1000.0
-          transTri[0] += dirTri[0]
+          rTri += flag*(200 * elapsed) / 1000.0
+          zMoves()
         }
         lastTime = timeNow
+      }
+      function zMoves(){
+        transTri[0]+=dirTri[0]
+        transTri[1]+=dirTri[1]
+        transTri[2]+=dirTri[2]
       }
       function tick() {
         requestAnimationFrame(tick)
